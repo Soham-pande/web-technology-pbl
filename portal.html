@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteBank | Secure Login & Banking Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --primary-light: #3B82F6;
+            --secondary-color: #10B981;
+            --dark-color: #1E293B;
+            --gray-color: #64748B;
+            --light-gray: #E2E8F0;
+            --light-color: #F8FAFC;
+            --white-color: #FFFFFF;
+            --black-color: #0F172A;
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --error-color: #EF4444;
+            --font-primary: 'Montserrat', sans-serif;
+            --font-secondary: 'Playfair Display', serif;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius: 0.5rem;
+            --radius-lg: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--dark-color);
+            background-color: var(--white-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--dark-color);
+            border: 2px solid var(--light-gray);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: var(--white-color);
+            box-shadow: var(--shadow);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--black-color);
+            font-family: var(--font-secondary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .nav-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-color);
+            font-weight: 600;
+        }
+
+        .logout-btn, .home-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+        }
+
+        .logout-btn:hover, .home-btn:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Main Layout */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white-color);
+            padding: 2rem 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 2rem 0 1rem;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            background-color: var(--light-color);
+            padding: 2rem;
+            padding-top: 6rem;
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Login Page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            margin-left: 0 !important;
+            padding: 2rem !important;
+            padding-top: 0 !important;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .home-link {
+            color: var(--white-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .home-link:hover {
+            gap: 1rem;
+        }
+
+        .login-box {
+            background-color: var(--white-color);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            color: var(--black-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--gray-color);
+            font-size: 0.9375rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+        }
+
+        .login-submit {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .signup-link {
+            text-align: center;
+            color: var(--gray-color);
+            font-size: 0.9375rem;
+        }
+
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .signup-link a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0;
+        }
+
+        .dashboard-header p {
+            color: var(--gray-color);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background-color: var(--white-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            color: var(--gray-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card-value {
+            font-size: 2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+            font-size: 0.875rem;
+            color: var(--gray-color);
+        }
+
+        /* Transactions Table */
+        .transactions-section {
+            background-color: var(--white-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .search-box {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--radius);
+            width: 250px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: var(--light-color);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        tr:hover {
+            background-color: var(--light-color);
+        }
+
+        .transaction-type {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .transaction-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .transaction-icon.debit {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+        }
+
+        .transaction-icon.credit {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .amount {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .amount.debit {
+            color: var(--error-color);
+        }
+
+        .amount.credit {
+            color: var(--success-color);
+        }
+
+        .status {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status.completed {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .status.pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        /* Transfer Page */
+        .transfer-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .transfer-card {
+            background-color: var(--white-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .transfer-header h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .account-selector {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-color);
+            border-radius: var(--radius);
+            border: 2px solid var(--light-gray);
+        }
+
+        .account-label {
+            font-size: 0.875rem;
+            color: var(--gray-color);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .account-display {
+            font-size: 1.125rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .transfer-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .transfer-success.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--success-color);
+            color: var(--white-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .transfer-success h3 {
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .transfer-success p {
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .transaction-details {
+            text-align: left;
+            background-color: var(--white-color);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--gray-color);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                padding: 1rem;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-box {
+                padding: 2rem;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            td, th {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <a href="index.html" class="home-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+            <div class="login-box">
+                <div class="login-header">
+                    <h1><span style="color: var(--primary-color);">Elite</span>Bank</h1>
+                    <p>Secure Banking Portal</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username or Email</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember"> Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary login-submit">Login</button>
+                </form>
+                <p class="signup-link">Don't have an account? <a onclick="showPage('openAccountPage')">Open Account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <header class="header">
+            <div class="container">
+                <nav class="navbar">
+                    <a href="#" class="logo"><span>Elite</span>Bank</a>
+                    <div class="nav-info">
+                        <div class="user-info">
+                            <div class="user-avatar">JD</div>
+                            <span id="userName">John Doe</span>
+                        </div>
+                        <a href="index.html" class="home-btn" title="Go to Home"><i class="fas fa-home"></i></a>
+                        <button class="logout-btn" onclick="showPage('loginPage')">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            <aside class="sidebar">
+                <div style="padding: 1rem 0; text-align: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0; color: white;">Menu</h3>
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" onclick="showDashboard(event)"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" onclick="showPage('transactionsPage'); event.preventDefault();"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                    <li><a href="#" onclick="showPage('transferPage'); event.preventDefault();"><i class="fas fa-paper-plane"></i> Transfer Money</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Welcome back, John!</h1>
+                        <p>Here's your account overview</p>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">Account Balance</div>
+                        <div class="card-value">₹5,45,280</div>
+                        <div class="card-footer">
+                            <span>Primary Account</span>
+                            <i class="fas fa-arrow-right" style="color: var(--primary-color);"></i>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Savings Account</div>
+                        <div class="card-value">₹2,15,000</div>
+                        <div class="card-footer">
+                            <span>High Yield</span>
+                            <i class="fas fa-arrow-right" style="color: var(--secondary-color);"></i>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Credit Limit</div>
+                        <div class="card-value">₹10,00,000</div>
+                        <div class="card-footer">
+                            <span>Used: ₹2,50,000</span>
+                            <i class="fas fa-arrow-right" style="color: var(--warning-color);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h2>Recent Transactions</h2>
+                        <a href="#" onclick="showPage('transactionsPage'); return false;" class="btn btn-outline btn-small">View All</a>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboardTransactions">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Transactions Page -->
+    <div id="transactionsPage" class="page">
+        <header class="header">
+            <div class="container">
+                <nav class="navbar">
+                    <a href="#" class="logo"><span>Elite</span>Bank</a>
+                    <div class="nav-info">
+                        <div class="user-info">
+                            <div class="user-avatar">JD</div>
+                            <span id="userName">John Doe</span>
+                        </div>
+                        <a href="index.html" class="home-btn" title="Go to Home"><i class="fas fa-home"></i></a>
+                        <button class="logout-btn" onclick="showPage('loginPage')">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            <aside class="sidebar">
+                <div style="padding: 1rem 0; text-align: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0; color: white;">Menu</h3>
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showPage('dashboardPage'); event.preventDefault();"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" class="active"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                    <li><a href="#" onclick="showPage('transferPage'); event.preventDefault();"><i class="fas fa-paper-plane"></i> Transfer Money</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="dashboard-header">
+                    <h1>Transaction History</h1>
+                </div>
+
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h2>All Transactions</h2>
+                        <input type="text" id="searchInput" placeholder="Search transactions..." class="search-box">
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTable">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Transfer Money Page -->
+    <div id="transferPage" class="page">
+        <header class="header">
+            <div class="container">
+                <nav class="navbar">
+                    <a href="#" class="logo"><span>Elite</span>Bank</a>
+                    <div class="nav-info">
+                        <div class="user-info">
+                            <div class="user-avatar">JD</div>
+                            <span id="userName">John Doe</span>
+                        </div>
+                        <a href="index.html" class="home-btn" title="Go to Home"><i class="fas fa-home"></i></a>
+                        <button class="logout-btn" onclick="showPage('loginPage')">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            <aside class="sidebar">
+                <div style="padding: 1rem 0; text-align: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0; color: white;">Menu</h3>
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showPage('dashboardPage'); event.preventDefault();"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" onclick="showPage('transactionsPage'); event.preventDefault();"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                    <li><a href="#" class="active"><i class="fas fa-paper-plane"></i> Transfer Money</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="dashboard-header">
+                    <h1>Transfer Money</h1>
+                </div>
+
+                <div class="transfer-container">
+                    <div class="transfer-card">
+                        <div class="transfer-header">
+                            <h2>New Transfer</h2>
+                        </div>
+
+                        <div class="account-selector">
+                            <div class="account-label">From Account</div>
+                            <div class="account-display">Checking Account • ₹5,45,280</div>
+                        </div>
+
+                        <form id="transferForm">
+                            <div class="form-group">
+                                <label for="recipientType">Recipient Type</label>
+                                <select id="recipientType" name="recipientType" required>
+                                    <option value="internal">EliteBank Account</option>
+                                    <option value="other">Other Bank</option>
+                                </select>
+                            </div>
+
+                            <div id="recipientFields">
+                                <div class="form-group">
+                                    <label for="accountNumber">Account Number</label>
+                                    <input type="text" id="accountNumber" name="accountNumber" placeholder="Enter account number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipientName">Recipient Name</label>
+                                    <input type="text" id="recipientName" name="recipientName" placeholder="Enter recipient name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="transferAmount">Amount (₹)</label>
+                                <input type="number" id="transferAmount" name="transferAmount" placeholder="Enter amount" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="transferNote">Note/Remarks</label>
+                                <input type="text" id="transferNote" name="transferNote" placeholder="Optional - purpose of transfer">
+                            </div>
+
+                            <div style="background-color: var(--light-color); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 2rem;">
+                                <h4 style="margin-bottom: 1rem; font-size: 1rem;">Transfer Summary</h4>
+                                <div class="detail-row">
+                                    <span class="detail-label">From Account</span>
+                                    <span class="detail-value">Checking Account</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Amount</span>
+                                    <span class="detail-value" id="summaryAmount">₹0</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Transaction Fee</span>
+                                    <span class="detail-value">FREE</span>
+                                </div>
+                                <div class="detail-row" style="border-top: 2px solid var(--light-gray); margin-top: 1rem; padding-top: 1rem;">
+                                    <span class="detail-label" style="font-weight: 700; font-size: 1.125rem;">Total Debit</span>
+                                    <span class="detail-value" style="font-size: 1.125rem;" id="totalDebit">₹0</span>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="showPage('dashboardPage')">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Confirm Transfer</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="transfer-success" id="transferSuccess">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h3>Transfer Successful!</h3>
+                        <p>Your money has been transferred successfully</p>
+                        <div class="transaction-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Reference ID</span>
+                                <span class="detail-value" id="refId">TRF2025001234</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Amount Transferred</span>
+                                <span class="detail-value" id="successAmount">₹0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Recipient</span>
+                                <span class="detail-value" id="successRecipient">John Smith</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Date & Time</span>
+                                <span class="detail-value" id="successDateTime">Oct 10, 2025 • 2:30 PM</span>
+                            </div>
+                        </div>
+                        <div class="form-actions" style="flex-direction: column;">
+                            <button class="btn btn-primary" onclick="resetTransfer()">New Transfer</button>
+                            <button class="btn btn-outline" onclick="showPage('transactionsPage')">View Transactions</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Open Account Page -->
+    <div id="openAccountPage" class="page">
+        <header class="header">
+            <div class="container">
+                <nav class="navbar">
+                    <a href="#" class="logo"><span>Elite</span>Bank</a>
+                    <div class="nav-info">
+                        <a href="index.html" class="home-btn" title="Go to Home"><i class="fas fa-home"></i></a>
+                        <button class="btn btn-primary btn-small" onclick="showPage('loginPage')">Back to Login</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <div style="margin-top: 2rem; padding: 0 1.5rem 3rem;">
+            <div class="transfer-card" style="max-width: 600px; margin: 0 auto;">
+                <h2>Open an Account</h2>
+                <p style="color: var(--gray-color); margin-bottom: 2rem;">Join EliteBank and enjoy premium banking experience</p>
+
+                <form id="openAccountForm">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+91 9876543210" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="showPage('loginPage')">Back to Login</button>
+                        <button type="submit" class="btn btn-primary">Open Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+   <script>
+        // User Data Storage
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@example.com',
+            phone: '+91 9876543210',
+            accountNumber: '1234567890',
+            balance: 545280,
+            savings: 215000,
+            creditLimit: 1000000,
+            creditUsed: 250000
+        };
+
+        // Transaction Storage
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [
+            { type: 'credit', desc: 'Salary Deposit', amount: 50000, date: '2025-10-10', time: '09:30 AM', status: 'completed' },
+            { type: 'debit', desc: 'Online Shopping - Amazon', amount: 5299, date: '2025-10-09', time: '03:45 PM', status: 'completed' },
+            { type: 'credit', desc: 'Freelance Project Payment', amount: 15000, date: '2025-10-08', time: '02:15 PM', status: 'completed' },
+            { type: 'debit', desc: 'EMI Payment - Home Loan', amount: 12500, date: '2025-10-07', time: '11:00 AM', status: 'completed' },
+        ];
+
+        // Save transactions to localStorage
+        function saveTransactions() {
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        // Save user data to localStorage
+        function saveUserData() {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+
+            if (pageId === 'transactionsPage') {
+                renderTransactions();
+            } else if (pageId === 'dashboardPage') {
+                updateUserInfo();
+                renderDashboardTransactions();
+            }
+        }
+
+        function showDashboard(e) {
+            e.preventDefault();
+            showPage('dashboardPage');
+        }
+
+        // Update user information across the dashboard
+        function updateUserInfo() {
+            // Update user name displays
+            document.querySelectorAll('#userName').forEach(el => {
+                el.textContent = currentUser.firstName + ' ' + currentUser.lastName;
+            });
+
+            // Update user avatars
+            document.querySelectorAll('.user-avatar').forEach(el => {
+                el.textContent = currentUser.firstName.charAt(0) + currentUser.lastName.charAt(0);
+            });
+
+            // Update welcome message
+            const welcomeMsg = document.querySelector('.dashboard-header h1');
+            if (welcomeMsg) {
+                welcomeMsg.textContent = `Welcome back, ${currentUser.firstName}!`;
+            }
+
+            // Update account balances
+            const balanceCard = document.querySelector('.cards-grid .card:nth-child(1) .card-value');
+            if (balanceCard) {
+                balanceCard.textContent = '₹' + currentUser.balance.toLocaleString('en-IN');
+            }
+
+            const savingsCard = document.querySelector('.cards-grid .card:nth-child(2) .card-value');
+            if (savingsCard) {
+                savingsCard.textContent = '₹' + currentUser.savings.toLocaleString('en-IN');
+            }
+
+            const creditCard = document.querySelector('.cards-grid .card:nth-child(3) .card-value');
+            if (creditCard) {
+                creditCard.textContent = '₹' + currentUser.creditLimit.toLocaleString('en-IN');
+            }
+
+            const creditUsed = document.querySelector('.cards-grid .card:nth-child(3) .card-footer span');
+            if (creditUsed) {
+                creditUsed.textContent = 'Used: ₹' + currentUser.creditUsed.toLocaleString('en-IN');
+            }
+
+            // Update account display in transfer page
+            const accountDisplay = document.querySelector('.account-display');
+            if (accountDisplay) {
+                accountDisplay.textContent = `Checking Account • ₹${currentUser.balance.toLocaleString('en-IN')}`;
+            }
+        }
+
+        // Render transactions in dashboard
+        function renderDashboardTransactions() {
+            const tbody = document.getElementById('dashboardTransactions');
+            tbody.innerHTML = '';
+            const recentTx = transactions.slice(0, 4);
+
+            recentTx.forEach(tx => {
+                const row = document.createElement('tr');
+                const icon = tx.type === 'credit' ? '↓' : '↑';
+                const typeClass = tx.type === 'credit' ? 'credit' : 'debit';
+                const amountSign = tx.type === 'credit' ? '+' : '-';
+                const amountClass = tx.type === 'credit' ? 'credit' : 'debit';
+
+                row.innerHTML = `
+                    <td>
+                        <div class="transaction-type">
+                            <div class="transaction-icon ${typeClass}">
+                                <i class="fas fa-arrow-${tx.type === 'credit' ? 'down' : 'up'}"></i>
+                            </div>
+                            ${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}
+                        </div>
+                    </td>
+                    <td>${tx.desc}</td>
+                    <td class="amount ${amountClass}">${amountSign} ₹${tx.amount.toLocaleString('en-IN')}</td>
+                    <td>${tx.date}</td>
+                    <td><span class="status ${tx.status}">${tx.status}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Render all transactions
+        function renderTransactions(filter = '') {
+            const tbody = document.getElementById('transactionsTable');
+            tbody.innerHTML = '';
+
+            let filtered = transactions;
+            if (filter) {
+                filtered = transactions.filter(tx => 
+                    tx.desc.toLowerCase().includes(filter.toLowerCase()) ||
+                    tx.amount.toString().includes(filter)
+                );
+            }
+
+            filtered.forEach(tx => {
+                const row = document.createElement('tr');
+                const typeClass = tx.type === 'credit' ? 'credit' : 'debit';
+                const amountSign = tx.type === 'credit' ? '+' : '-';
+                const amountClass = tx.type === 'credit' ? 'credit' : 'debit';
+
+                row.innerHTML = `
+                    <td>
+                        <div class="transaction-type">
+                            <div class="transaction-icon ${typeClass}">
+                                <i class="fas fa-arrow-${tx.type === 'credit' ? 'down' : 'up'}"></i>
+                            </div>
+                            ${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}
+                        </div>
+                    </td>
+                    <td>${tx.desc}</td>
+                    <td class="amount ${amountClass}">${amountSign} ₹${tx.amount.toLocaleString('en-IN')}</td>
+                    <td>${tx.date}</td>
+                    <td>${tx.time}</td>
+                    <td><span class="status ${tx.status}">${tx.status}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray-color);">No transactions found</td></tr>';
+            }
+        }
+
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check if user exists in localStorage
+            const users = JSON.parse(localStorage.getItem('bankUsers')) || [];
+            const user = users.find(u => u.email === username || u.firstName.toLowerCase() === username.toLowerCase());
+
+            if (user) {
+                currentUser = user;
+                saveUserData();
+                showPage('dashboardPage');
+                updateUserInfo();
+                renderDashboardTransactions();
+            } else {
+                // Default login for testing
+                showPage('dashboardPage');
+                updateUserInfo();
+                renderDashboardTransactions();
+            }
+        });
+
+        // Open Account Form
+        document.getElementById('openAccountForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            // Generate random account number
+            const accountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+
+            // Create new user object
+            const newUser = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                accountNumber: accountNumber,
+                balance: 10000, // Initial deposit
+                savings: 0,
+                creditLimit: 50000,
+                creditUsed: 0
+            };
+
+            // Get existing users or create new array
+            let users = JSON.parse(localStorage.getItem('bankUsers')) || [];
+            
+            // Check if email already exists
+            const existingUser = users.find(u => u.email === email);
+            if (existingUser) {
+                alert('An account with this email already exists. Please login instead.');
+                return;
+            }
+
+            // Add new user
+            users.push(newUser);
+            localStorage.setItem('bankUsers', JSON.stringify(users));
+
+            // Set as current user
+            currentUser = newUser;
+            saveUserData();
+
+            // Create welcome transaction
+            const welcomeTx = {
+                type: 'credit',
+                desc: 'Welcome Bonus - Account Opening',
+                amount: 10000,
+                date: new Date().toISOString().split('T')[0],
+                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+                status: 'completed'
+            };
+            transactions.unshift(welcomeTx);
+            saveTransactions();
+
+            alert(`Account created successfully!\nYour Account Number: ${accountNumber}\nWelcome Bonus: ₹10,000 credited!`);
+            
+            // Redirect to dashboard
+            showPage('dashboardPage');
+            updateUserInfo();
+            renderDashboardTransactions();
+        });
+
+        // Transfer Form
+        document.getElementById('transferForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const recipientName = document.getElementById('recipientName').value;
+            const description = `Transfer to ${recipientName}`;
+
+            // Check if user has sufficient balance
+            if (amount > currentUser.balance) {
+                alert('Insufficient balance! Your current balance is ₹' + currentUser.balance.toLocaleString('en-IN'));
+                return;
+            }
+
+            // Deduct from balance
+            currentUser.balance -= amount;
+            saveUserData();
+            
+            // Add new transaction to history
+            const now = new Date();
+            const transaction = {
+                type: 'debit',
+                desc: description,
+                amount: amount,
+                date: now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'),
+                time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+                status: 'completed'
+            };
+            
+            // Add to beginning of transactions array
+            transactions.unshift(transaction);
+            saveTransactions();
+            
+            // Show success message
+            document.getElementById('refId').textContent = 'TRF' + new Date().getFullYear() + Math.random().toString(9).slice(2, 10);
+            document.getElementById('successAmount').textContent = '₹' + amount.toLocaleString('en-IN');
+            document.getElementById('successRecipient').textContent = recipientName;
+            document.getElementById('successDateTime').textContent = now.toLocaleDateString() + ' • ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            
+            document.getElementById('transferForm').style.display = 'none';
+            document.getElementById('transferSuccess').classList.add('show');
+
+            // Update dashboard balances
+            updateUserInfo();
+        });
+
+        function resetTransfer() {
+            document.getElementById('transferForm').reset();
+            document.getElementById('transferForm').style.display = 'block';
+            document.getElementById('transferSuccess').classList.remove('show');
+            document.getElementById('summaryAmount').textContent = '₹0';
+            document.getElementById('totalDebit').textContent = '₹0';
+        }
+
+        // Update transfer summary
+        document.getElementById('transferAmount').addEventListener('input', function() {
+            const amount = this.value || '0';
+            document.getElementById('summaryAmount').textContent = '₹' + parseFloat(amount).toLocaleString('en-IN');
+            document.getElementById('totalDebit').textContent = '₹' + parseFloat(amount).toLocaleString('en-IN');
+        });
+
+        // Search transactions
+        document.getElementById('searchInput').addEventListener('input', function() {
+            renderTransactions(this.value);
+        });
+
+       // Initialize
+        renderDashboardTransactions();
+        
+        // Load user data on page load if logged in
+        if (localStorage.getItem('currentUser')) {
+            updateUserInfo();
+        }
+    </script>
+</body>
+</html>
